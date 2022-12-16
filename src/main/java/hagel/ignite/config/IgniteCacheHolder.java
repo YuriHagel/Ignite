@@ -1,4 +1,4 @@
-package test.ignite.config;
+package hagel.ignite.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ignite.configuration.CacheConfiguration;

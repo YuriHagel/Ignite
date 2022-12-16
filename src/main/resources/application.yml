@@ -1,0 +1,67 @@
+server:
+  port: ${port:8080}
+
+spring:
+  main:
+    banner_mode: 'off'
+  application:
+    name: 'ignite'
+  profiles:
+    active: ''
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    info:
+      enabled: true
+    jolokia:
+      enabled: true
+    prometheus:
+      enabled: true
+    loggers:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure:
+        include: health,info,prometheus,loggers
+      path-mapping:
+        prometheus: /metrics
+logbook:
+  exclude:
+    - /health
+    - /v2/api-docs
+    - /swagger-resources/**
+    - /swagger-ui.html
+    - /webjars/**
+    - /error
+    - /metrics
+  filter:
+    enabled: true
+  format:
+    style: json
+  write:
+    category: HTTP
+    level: info
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+app:
+  host: 'host'
+  ignite:
+    enabled: true
+    zookeeperEnabled: true
+    addresses: 127.0.0.1:47100
+    communication:
+      localPort: 47101
+      sharedMemoryPort: 48101
+    id: id
+    state-check-initial-delay: 30000
+    state-check-interval: 60000
+    work-directory: /
+    zkConnectionString: 127.0.0.1:2181
+    zkRootPath: /ignite

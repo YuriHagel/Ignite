@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+
+        <property name="consistentId" value="ignite"/>
+        <property name="userAttributes">
+            <map>
+                <entry key="dc" value="ds"/>
+            </map>
+        </property>
+
+        <property name="peerClassLoadingEnabled" value="true"/>
+
+        <property name="workDirectory" value="/ignite"/>
+
+        <property name="metricsLogFrequency" value="0"/>
+
+        <property name="rebalanceThreadPoolSize" value="4"/>
+
+
+        <property name="transactionConfiguration">
+            <bean class="org.apache.ignite.configuration.TransactionConfiguration">
+                <property name="defaultTxTimeout" value="#{ 10L * 1000 }"/>
+                <property name="txTimeoutOnPartitionMapExchange" value="#{ 10L * 1000 }"/>
+            </bean>
+        </property>
+
+        <property name="dataStorageConfiguration">
+            <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+                <property name="defaultDataRegionConfiguration">
+                    <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                        <property name="name" value="HAGEL"/>
+                        <property name="maxSize" value="#{ 512L * 1024 * 1024 }"/>
+
+                        <property name="persistenceEnabled" value="false"/>
+                        <property name="metricsEnabled" value="true"/>
+                    </bean>
+                </property>
+                <property name="dataRegionConfigurations">
+                    <list>
+                        <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                            <property name="name" value="Persistence Region"/>
+                            <property name="maxSize" value="#{ 512L * 1024 * 1024 }"/>
+                            <property name="checkpointPageBufferSize" value="#{ 2L * 1024 * 1024 * 1024 }"/>
+
+                            <property name="persistenceEnabled" value="false"/>
+                            <property name="metricsEnabled" value="true"/>
+                        </bean>
+                    </list>
+                </property>
+                <property name="walMode" value="LOG_ONLY"/>
+                <property name="walSegmentSize" value="#{ 256L * 1024 * 1024 }"/>
+                <property name="walCompactionEnabled" value="true"/>
+                <property name="writeThrottlingEnabled" value="true"/>
+                <property name="metricsEnabled" value="true"/>
+            </bean>
+        </property>
+
+        <property name="communicationSpi">
+            <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
+                <property name="usePairedConnections" value="true"/>
+            </bean>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.zk.ZookeeperDiscoverySpi">
+                <property name="zkConnectionString" value="zookeeper:2181"/>
+                <property name="zkRootPath" value="/ignite"/>
+            </bean>
+        </property>
+
+        <property name="igniteLogger">
+            <bean class="org.apache.ignite.logger.log4j2.Log4J2Logger">
+                <constructor-arg type="java.lang.String" value="/config/log4j2.xml"/>
+            </bean>
+        </property>
+    </bean>
+</beans>

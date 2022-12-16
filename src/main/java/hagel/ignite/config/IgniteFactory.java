@@ -1,4 +1,4 @@
-package test.ignite.config;
+package hagel.ignite.config;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.ToString;
@@ -45,7 +45,6 @@ public class IgniteFactory implements AutoCloseable {
         if (!isReady()) {
             throw new IgniteException("Ignite is not ready: state=" + Ignition.state());
         }
-
         return ignite;
     }
 

@@ -1,4 +1,4 @@
-package test.ignite.config;
+package hagel.ignite.config;
 
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
